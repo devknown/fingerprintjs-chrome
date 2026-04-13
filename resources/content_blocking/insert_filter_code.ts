@@ -91,17 +91,13 @@ async function insertNewFilters(filePath: string, filters: Filters) {
 }
 
 function filtersToJs(filters: Filters) {
-  const decodeBase64Function = 'fromB64'
-  let code = `const ${decodeBase64Function} = atob // Just for better minification\n\n`
-  code += 'return {'
+  let code = 'return {'
 
   for (const [name, selectors] of Object.entries(filters)) {
     code += `${JSON.stringify(name)}: [`
 
     for (const selector of selectors) {
-      code += isInappropriateSelector(selector)
-        ? `${decodeBase64Function}(${JSON.stringify(btoa(selector))})`
-        : JSON.stringify(selector)
+      code += JSON.stringify(selector)
       code += ','
     }
 
